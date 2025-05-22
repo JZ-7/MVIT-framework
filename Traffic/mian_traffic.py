@@ -8,9 +8,9 @@ from functools import reduce
 np.random.seed(2024)
 rpy.set_seed(2341)
 
-systemname = 'traffic_weekly_dataset'
-data_train = np.loadtxt('C:/Users/JXM/PycharmProjects/RC_ESN/MVIT_upload/DATA_TRAIN/'+systemname+'_train.txt')
-data_target = np.loadtxt('C:/Users/JXM/PycharmProjects/RC_ESN/MVIT_upload/DATA_TARGET/'+systemname+'_target.txt')
+system = 'traffic'
+data_train = np.loadtxt(system+'_dataset_train.txt')
+data_target = np.loadtxt(system+'_dataset_target.txt')
 
 pre_steps = 10
 target_dim = [489, 481, 494, 725]
