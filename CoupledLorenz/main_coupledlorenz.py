@@ -5,30 +5,30 @@ from reservoirpy.mat_gen import uniform
 import reservoirpy as rpy
 from functools import reduce
 
-np.random.seed(2024)
-rpy.set_seed(2341)
+np.random.seed(2675)
+rpy.set_seed(2023)
 
-systemname = 'traffic_weekly_dataset'
-data_train = np.loadtxt('C:/Users/JXM/PycharmProjects/RC_ESN/MVIT_upload/DATA_TRAIN/'+systemname+'_train.txt')
-data_target = np.loadtxt('C:/Users/JXM/PycharmProjects/RC_ESN/MVIT_upload/DATA_TARGET/'+systemname+'_target.txt')
+system = 'coupledlorenz'
+data_train = np.loadtxt(system+'_train.txt')
+data_target = np.loadtxt(system+'_target.txt')
 
 pre_steps = 10
-target_dim = [489, 481, 494, 725]
-Standard = 'standard'
-dimforpre_num = 60
+target_dim = [0, 1, 2]
+Standard = 'minmax'
+dimforpre_num = 4
 
-umin = -0.18
-umax = 0.18
+umin = -0.1
+umax = 0.1
 init_mode = 'uniform'
 connectivity = [0.1, 0.1, 0.1]
 Win_init = uniform(low=umin, high=umax, connectivity=connectivity[0])
 bias_init = uniform(low=umin, high=umax, connectivity=connectivity[1])
 W_init = uniform(low=umin, high=umax, connectivity=connectivity[2])
-Reservoir_size = 600
-input_con, re_con = 0.2, 0.2
-lr = 0.8
+Reservoir_size = 300
+input_con, re_con = 0.01, 0.01
+lr = 1
 sr = 0.1
-ridge = 1e-09
+ridge = 1e-10
 
 from nodes_expansion import Square_node
 path_num = len(target_dim)*(pre_steps+1)
@@ -249,6 +249,7 @@ def main(model, TRAIN, TARGET, targetdim, presteps, dimforpre_num=4, evalzerolag
     eachrmse, RMSE, eachmae, eachpcc = eval_model(target, preds, len(target_dim), presteps, evalzerolag=evalzerolag)
     return preds, eachrmse, RMSE, eachmae, eachpcc
 
+data_target = data_target[:pre_steps, :]
 final_pred, eachRMSE, RMSE, eachMAE, eachPCC = main(MODEL, data_train, data_target, target_dim, pre_steps,
                                   dimforpre_num=dimforpre_num, evalzerolag=True, standardization=Standard)
 
